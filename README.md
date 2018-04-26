@@ -2,7 +2,7 @@
 
 In this CloudLab we deploy a Ceph cluster using CentOS 7 and ceph-ansible
 
-You can also check [this project[(https://github.com/CanaryTek/clab-ceph), it's a more complete and powerfull implementation based on openSUSE and DeepSea
+You can also check [this project](https://github.com/CanaryTek/clab-ceph), it's a more complete and powerfull implementation based on openSUSE and DeepSea
 
 ## The Lab
 
