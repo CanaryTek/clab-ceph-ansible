@@ -7,11 +7,11 @@ iSCSI gw support in CentOS7 is still **experimental** we will use an unofficial 
 
 We will need the following **unofficial** packages installed in all iSCSI GW hosts:
 
-  * kernel: a 4.16 kernel with needed patches (https://github.com/ceph/ceph-client)
-  * ceph-iscsi-config: configuration modules for managing iscsi gateways for ceph (https://github.com/ceph/ceph-iscsi-config)
-  * ceph-iscsi-cli: cli for managing ceph/iscsi gateways built using LIO (https://github.com/ceph/ceph-iscsi-cli)
-  * tcmu-runner: userspace side of the LIO TCM-User backstore, compiled with last librbd1 with needed locking support (https://github.com/open-iscsi/tcmu-runner/)
-  * python-rtslib: Python library for configuring the Linux kernel-based multiprotocol SCSI target (LIO) (https://github.com/open-iscsi/rtslib-fb)
+  * **kernel:** a 4.17 kernel with needed patches (https://github.com/ceph/ceph-client)
+  * **ceph-iscsi-config:** configuration modules for managing iscsi gateways for ceph (https://github.com/ceph/ceph-iscsi-config)
+  * **ceph-iscsi-cli:** cli for managing ceph/iscsi gateways built using LIO (https://github.com/ceph/ceph-iscsi-cli)
+  * **tcmu-runner:** userspace side of the LIO TCM-User backstore, compiled with last librbd1 with needed locking support (https://github.com/open-iscsi/tcmu-runner/)
+  * **python-rtslib**: Python library for configuring the Linux kernel-based multiprotocol SCSI target (LIO) (https://github.com/open-iscsi/rtslib-fb)
 
 To simplify deployment we have created a yum repository with the right version for all needed packages and it's dependencies (http://yumrepo.modularit.net/repos/ceph-iscsi-centos-7/ceph-iscsi-centos-7.repo)
 
@@ -29,7 +29,7 @@ for h in ceph-deploy ceph-mon{1,2,3} ceph-osd{1,2,3,4}; do echo $h; ssh $h "curl
 for h in ceph-mon{1,2,3}; do echo $h; ssh $h "yum -y install kernel"; done
 ```
 
-  * Make sure the configured kernel for next boot is the new 4.16 kernel
+  * Make sure the configured kernel for next boot is the new 4.17 kernel
 
 ```shell
 for h in ceph-mon{1,2,3}; do echo $h; ssh $h "grub2-editenv list"; done
