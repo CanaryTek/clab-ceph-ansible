@@ -22,23 +22,22 @@ task :init_vms do |t|
 	 %x[brctl addbr osdbr0]
 	 %x[ip link set osdbr0 up]
 	 @vms.each do |vm|
-		name=vm
-		ssh_key=@config["ssh_key"]
-		ram=@config["vms"][vm]["ram"]
-		cpus=@config["vms"][vm]["cpus"]
-		options=@config["vms"][vm]["options"]
-		bridge=@config["vms"][vm]["bridge"]
-		vm_dir="vm/#{@prefix}.#{vm}"
-		disk_entry=generate_disk_entries(vm)
-		net_entry=generate_net_entries(vm)
-                puts "Creatig instance #{@prefix}.#{vm}"
-		%x[mkdir -p #{vm_dir}]
-		create_user_data(vm,ssh_key)
-		create_meta_data(vm)
-		%x[cd #{vm_dir} ; genisoimage -output cidata.iso -volid cidata -joliet -r meta-data user-data]
-		%x[cp images/#{@config["images"]["default"]["name"]} #{vm_dir}/#{vm}-disk1.qcow2]
-		%x[qemu-img resize #{vm_dir}/#{vm}-disk1.qcow2 #{@config["vms"][vm]["disks"]["disk1"]["size"]}G]
-    		%x[sudo virt-install --import --name #{@prefix}.#{vm} --ram #{ram} --vcpus #{cpus} #{disk_entry} #{net_entry} --disk #{vm_dir}/cidata.iso,device=cdrom --os-type=linux --os-variant=sles12 --noautoconsole #{options}]
+    name=vm
+    ssh_key=@config["ssh_key"]
+    ram=@config["vms"][vm]["ram"]
+    cpus=@config["vms"][vm]["cpus"]
+    options=@config["vms"][vm]["options"]
+    vm_dir="vm/#{@prefix}.#{vm}"
+    disk_entry=generate_disk_entries(name)
+    net_entry=generate_net_entries(name)
+    puts "Creatig instance #{@prefix}.#{name}"
+    %x[mkdir -p #{vm_dir}]
+    create_user_data(name,ssh_key)
+    create_meta_data(name)
+    %x[cd #{vm_dir} ; mkisofs -output cidata.iso -volid cidata -joliet -r meta-data user-data]
+    %x[cp images/#{@config["images"]["default"]["name"]} #{vm_dir}/#{name}-disk1.qcow2]
+    %x[qemu-img resize #{vm_dir}/#{name}-disk1.qcow2 #{@config["vms"][vm]["disks"]["disk1"]["size"]}G]
+    %x[sudo virt-install --import --name #{@prefix}.#{name} --ram #{ram} --vcpus #{cpus} #{disk_entry} #{net_entry} --disk #{vm_dir}/cidata.iso,device=cdrom --os-type=linux --os-variant=sles12 --noautoconsole #{options}]
 	end
 end
 
@@ -68,11 +67,14 @@ end
 
 desc "Start lab virtual machines"
 task :start_vms do |t|
-	@vms.each do |vm|
-		puts "Starting #{@prefix}.#{vm}"
-		%x[sudo virsh start #{@prefix}.#{vm}]
-		system("sleep 5")
-	end
+  # Create osdbr0 bridge if it doesn't exist
+  %x[sudo brctl show | grep -q osdbr0 || echo "Creating bridge osdbr0"  && sudo brctl addbr osdbr0 && sudo ip link set osdbr0 up]
+
+  @vms.each do |vm|
+    puts "Starting #{@prefix}.#{vm}"
+    %x[sudo virsh start #{@prefix}.#{vm}]
+    system("sleep 5")
+  end
 end
 
 desc "Stop lab virtual machines"

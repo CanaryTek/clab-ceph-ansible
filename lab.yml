@@ -39,7 +39,7 @@ vms:
        size: 40
  ceph-mon1:
    name: ceph-mon1
-   ram: 1024
+   ram: 3072
    cpus: 1
    net:
      net1: 
@@ -53,7 +53,7 @@ vms:
        size: 40
  ceph-mon2:
    name: ceph-mon2
-   ram: 1024
+   ram: 3072
    cpus: 1
    net:
      net1: 
@@ -67,7 +67,7 @@ vms:
        size: 40
  ceph-mon3:
    name: ceph-mon3
-   ram: 1024
+   ram: 3072
    cpus: 1
    net:
      net1: 

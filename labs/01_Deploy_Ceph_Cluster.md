@@ -24,17 +24,6 @@ EOF
 for h in ceph-mon{1,2,3} ceph-osd{1,2,3,4}; do echo $h; scp /etc/hosts root@$h:/etc/hosts; done
 ```
 
-  * Disable ipv6 in all nodes (to avoid long delays)
-
-```shell
-cat > /etc/sysctl.d/disable-ipv6.conf <<EOF
-net.ipv6.conf.all.disable_ipv6 = 1
-net.ipv6.conf.default.disable_ipv6 = 1
-net.ipv6.conf.lo.disable_ipv6 = 1
-EOF
-for h in ceph-mon{1,2,3} ceph-osd{1,2,3,4}; do echo $h; scp /etc/sysctl.d/disable-ipv6.conf root@$h:/etc/sysctl.d/disable-ipv6.conf; done
-```
-
   * Setup nameserver in all hosts
 
 ```shell
