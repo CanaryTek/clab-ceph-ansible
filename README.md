@@ -65,4 +65,5 @@ btfs snap .snapshots/01_after_installation vm
 
   * [Lab 1: Deploy_Ceph_Cluster](labs/01_Deploy_Ceph_Cluster.md)
   * [Lab 2: Monitoring](labs/02_Monitoring.md)
+  * [Lab 3: Setup_iSCSI_GW](labs/03_Setup_iSCSI_GW.md)
 
